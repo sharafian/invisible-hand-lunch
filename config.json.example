@@ -1,0 +1,11 @@
+{
+  "token": "SECRET",
+  "channel": "CHANNELID",
+  "time": 10,
+  "options": {
+    "sushi": "Sushi",
+    "ramen": "Ramen",
+    "hamburger": "Burgers",
+    "rice": "Rice"
+  }
+}
