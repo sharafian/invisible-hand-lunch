@@ -22,14 +22,15 @@ const handle = (e, action) => {
 
 const wait = () => {
   const text = words.random(words.lamentations) +
-    ' No responses! It\'s OK---I\'ll wait.'
+    ' No responses! It\'s OK @channel---I\'ll wait.'
 
   slack.chat.postMessage({
     token,
     channel,
     text,
     as_user: true,
-    user_name: 'Invisible Hand'
+    user_name: 'Invisible Hand',
+    link_names: true
   }, (e, data) => {
     setTimeout(review, time * 60 * 1000)
   })
@@ -108,7 +109,7 @@ bot.hello(() => {
   const text = words.random(words.greetings) +
     ' What\'s for lunch today? My suggestions are: ' +
     (Object.keys(options).map((k) => '\n  - ' + ' (:' + k + ':) ' + options[k])) +
-    '\nBe good citizens and vote! ' +
+    '\nBe good citizens and vote, @channel! ' +
     words.random(words.celebrations)
 
   // print the first greeting
@@ -117,7 +118,8 @@ bot.hello(() => {
     channel,
     text,
     as_user: true,
-    user_name: 'Invisible Hand'
+    user_name: 'Invisible Hand',
+    link_names: true
   }, (e, data) => {
     handle(e, 'message')
     timeStamp = data.ts
