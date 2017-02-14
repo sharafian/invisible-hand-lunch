@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+'use strict'
+
 const slack = require('slack')
 const conf = require('./config.json')
 const words = require('./src/message')
@@ -65,7 +68,7 @@ const review = () => {
     if (!data.message.reactions) return wait()
 
     // total up the highest reaction
-    let maxCount = 0
+    let maxCount = 1
     const maxReact = []
     data.message.reactions.forEach((r) => {
       console.log(r.name, ':', r.count)
@@ -80,6 +83,22 @@ const review = () => {
 
     // announce the result of the vote
     announce(maxReact)
+  })
+}
+
+const react = (reactions) => {
+  if (!reactions.length) {
+    return
+  }
+
+  slack.reactions.add({
+    token,
+    channel: channel,
+    timestamp: timeStamp,
+    name: reactions[0]
+  }, (e, data) => {
+    handle(e, 'add reaction')
+    react(reactions.slice(1))
   })
 }
 
@@ -102,6 +121,7 @@ bot.hello(() => {
   }, (e, data) => {
     handle(e, 'message')
     timeStamp = data.ts
+    react(Object.keys(conf.options))
     setTimeout(review, time * 60 * 1000)
   })
 })
