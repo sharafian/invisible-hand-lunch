@@ -3,9 +3,9 @@
   "channel": "CHANNELID",
   "time": 10,
   "options": {
-    "sushi": "Sushi",
-    "ramen": "Ramen",
-    "hamburger": "Burgers",
-    "rice": "Rice"
+    "sushi": { "name": "Sushi", "number": "555 5555" },
+    "ramen": { "name": "Ramen", "number": "666" },
+    "hamburger": { "name": "Burgers", "number": "NaN" },
+    "rice": { "name": "Rice" }
   }
 }

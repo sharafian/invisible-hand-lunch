@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/local/bin/node
 'use strict'
 
 const slack = require('slack')
@@ -15,6 +15,7 @@ let timeStamp = null
 
 const handle = (e, action) => {
   if (e) {
+    console.error(e)
     console.error(action, ':', e)
     process.exit(1)
   }
@@ -39,9 +40,13 @@ const wait = () => {
 const announce = (reactions) => {
   console.log('announce:', reactions)
   console.log('announce2:', reactions.length)
+  
+  const winner = words.random(reactions.map((e) => e.name))
+  console.log(winner)
   const text = 'Looks like the winner is: ' +
-    ((reactions.length > 1) ? ('...A tie! Between ') : ('')) +
-    (reactions.map((e) => (options[e.name] + ' (:' + e.name + ':)'))).join(' and ') +
+    ((reactions.length > 1) ? ('...A tie! But I shall take the liberty of choosing ') : ('')) +
+    options[winner].name + ' (:' + winner + ':)' +
+    (options[winner].number ? ('. Their number is: ' + options[winner].number) : ('')) +
     '. ' + words.random(words.celebrations)
 
   slack.chat.postMessage({
@@ -108,7 +113,7 @@ bot.hello(() => {
   console.log(channel)
   const text = words.random(words.greetings) +
     ' What\'s for lunch today? My suggestions are: ' +
-    (Object.keys(options).map((k) => '\n  - ' + ' (:' + k + ':) ' + options[k])) +
+    (Object.keys(options).map((k) => '\n  - ' + ' (:' + k + ':) ' + options[k].name)) +
     '\nBe good citizens and vote, @channel! ' +
     words.random(words.celebrations)
 
